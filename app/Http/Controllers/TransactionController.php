@@ -17,7 +17,6 @@ class TransactionController extends Controller
 			'contact' => 'required',
 			'address' => 'required',
 			'size' => 'required',
-			'payment_method' => 'required',
 		]);
 		
 		$transact = DB::table('transactions')->get();
@@ -44,7 +43,6 @@ class TransactionController extends Controller
 		$address = $request->input('address');
 		$password = $request->input('password');
 		$size = $request->input('size');
-		$payment_method = $request->input('payment_method');
 		$new = false;
 		$message = "";
 		
@@ -81,7 +79,6 @@ class TransactionController extends Controller
 					'contact' => $contact,
 					'address' => $address,
 					'size' => $size,
-					'payment_method' => $payment_method,
 					'created_at' => $date,
 					'updated_at' => $date,
 				]);
@@ -114,7 +111,6 @@ class TransactionController extends Controller
 				'contact' => $contact,
 				'address' => $address,
 				'size' => $size,
-				'payment_method' => $payment_method,
 				'created_at' => $date,
 				'updated_at' => $date,
 			]);

@@ -11,13 +11,25 @@
 
 @php
 
+$id = $_GET['id'];
+
 echo $id;
-echo "<br>";
+
+$users = DB::table('users')->where('id', '=', $id)->get();
+
+foreach($users as $user){
+	
+	$username = $user->username;
+	
+}
+
 echo $username;
 
-$data = DB::table('transactions')->where('username', $username)->get();
+$data = DB::table('transactions')->where('username', '=', $username)->get();
 
 @endphp
+
+<a href="{{ route('index') }}">Home</a>
 
 <table border=1>
 	
@@ -26,21 +38,33 @@ $data = DB::table('transactions')->where('username', $username)->get();
 		<th>Product Name</th>
 		<th>Amount</th>
 		<th>Check Out</th>
+		<th>Action</th>
 	</tr>
 	
-	<form method='POST' action={{ route('checkout') }}>
+	<form method='GET' action="{{ route('checkout') }}">
 	@csrf
 		
 		@foreach($data as $user)
+		
 			<tr>
 				<td>{{ $user->id }}</td>
 				<td>{{ $user->product_name }}</td>
 				<td>{{ $user->amount }}</td>
 				<td><input type='checkbox' name='forcheckout[]' value='{{ $user->id }}'></td>
+				<td><a href='{{ route("item.edit", ["id" => $user->id]) }}'>Edit</a></td>
+				<td><a href='{{ route("item.cancel", ["id" => $user->id]) }}'>Cancel</a></td>
 			</tr>
 		@endforeach
 	
 </table>
+
+<select name='mode'>
+	<option>BDO Bank Transfer</option>
+	<option>GCash</option>
+</select>
+<br>
+<input type='text' name='account' required>
+<br>
 
 <button type="Submit">Check Out</button>
 </form>
@@ -48,7 +72,7 @@ $data = DB::table('transactions')->where('username', $username)->get();
 <table border=1>
 	@php
 	
-	$data = DB::table('check_outs')->get();
+	$data = DB::table('check_outs')->where('user_id', '=', $id)->get();
 	
 	if(is_null($data)){
 		echo "<tr>";
@@ -70,6 +94,7 @@ $data = DB::table('transactions')->where('username', $username)->get();
 			echo "<tr>";
 			echo "<td>$user->id</td>";
 			echo "<td>$user->items</td>";
+			echo "<td>$user->mode_of_payment</td>";
 			echo "<td>$user->totalamount</td>";
 			echo "<td>";
 			

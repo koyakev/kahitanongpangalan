@@ -9,7 +9,7 @@
 <body>
 
 
-<form method="POST" action="{{ route('checkout.verify') }}">
+<form method="GET" action="{{ route('checkout.verify') }}">
 	@csrf
 	<input type="text" name="username" placeholder="Your username" required><br>
 	<input type="password" name="password" required><br>

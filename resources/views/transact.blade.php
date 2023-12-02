@@ -16,15 +16,9 @@
 	<input type="text" name="contact" value="{{ $contact }}"><br>
 	<input type="text" name="address" value="{{ $address }}"><br>
 	<select name="size">
-		<option></option>
 		<option>Small</option>
 		<option>Medium</option>
 		<option>Large</option>
-	</select>
-	<select name="payment_method">
-		<option></option>
-		<option>Cash on Delivery</option>
-		<option>GCash</option>
 	</select>
 	
 	<button type="submit">Submit</button>

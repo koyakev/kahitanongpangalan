@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
 			$table->string('items');
 			$table->integer('user_id');
+			$table->string('mode_of_payment');
+			$table->string('account_number');
 			$table->integer('totalamount');
 			$table->string('delivery');
         });

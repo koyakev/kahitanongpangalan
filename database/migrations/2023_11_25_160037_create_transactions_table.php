@@ -19,7 +19,6 @@ return new class extends Migration
 			$table->string('contact');
 			$table->string('address');
 			$table->integer('amount');
-			$table->string('payment_method');
             $table->timestamps();
         });
     }

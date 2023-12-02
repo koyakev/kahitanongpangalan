@@ -17,6 +17,10 @@ use App\Http\Controllers\CheckOutController;
 */
 
 Route::get('/', function () {
+	return view('home');
+})->name('home');
+
+Route::get('/index', function () {
     return view('index');
 })->name('index');
 
@@ -29,5 +33,10 @@ Route::get('/register', [TransactionController::class, 'registerTransact'])->nam
 Route::post('/registertransact', [TransactionController::class, 'register'])->name('transact.registerStore');
 
 Route::get('loginUser', [CheckOutController::class, 'login'])->name('checkout.user');
-Route::post('loginUserVerify', [CheckOutController::class, 'verifyUser', 'listTransaction'])->name('checkout.verify');
-Route::post('checkout', [CheckOutController::class, 'checkoutitems'])->name('checkout');
+Route::get('loginUserVerify', [CheckOutController::class, 'verifyUser'])->name('checkout.verify');
+Route::get('cart', [CheckOutController::class, 'checkoutitems'])->name('cart');
+Route::get('checkout', [CheckOutController::class, 'checkout'])->name('checkout');
+Route::get('itemedit', [CheckOutController::class, 'edit'])->name('item.edit');
+Route::get('itemdelete', [CheckOutController::class, 'cancel'])->name('item.cancel');
+Route::get('itemeditUpdate', [CheckOutController::class, 'update'])->name('item.update');
+Route::get('itemeditDelete', [CheckOutController::class, 'delete'])->name('item.delete');

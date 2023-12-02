@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\CheckOut;
+use App\Models\Transaction;
 
 class CheckOutController extends Controller
 {
@@ -31,7 +32,7 @@ class CheckOutController extends Controller
 			}
 			
 			if($valid == true){
-				return view('itemList', ['id' => $id, 'username' => $username]);
+				return redirect()->route('cart',  ['id' => $id]);
 			}
 		}
 		
@@ -40,9 +41,14 @@ class CheckOutController extends Controller
 		}
 	}
 	
-	public function checkoutitems(Request $request){
+	public function checkoutitems(){
+		return view('itemList');
+	}
+	
+	public function checkout(Request $request){
 		$transactionID = $request->input('forcheckout');
-		
+		$mode = $request->input('mode');
+		$account = $request->input('account');
 		$items = '';
 		$totalamount = 0;
 		$date = date('Y-m-d');
@@ -87,11 +93,71 @@ class CheckOutController extends Controller
 			'items' => $items,
 			'user_id' => $user_id,
 			'totalamount' => $totalamount,
-			'delivery' => $delivery
+			'delivery' => $delivery,
+			'mode_of_payment' => $mode,
+			'account_number' => $account,
 		]);
 		
-		return redirect()->route('index')->with('success', 'Check Out Complete. Total amount: '.$totalamount);
+		return redirect()->route('cart', ['id' => $user_id]);
 		
 	}
 	
+	public function edit(){
+		return view('itemEdit');
+	}
+	
+	public function update(Request $request){
+		$username = $request->input('username');
+		$size = $request->input('size');
+		$contact = $request->input('contact');
+		$address = $request->input('address');
+		$users = DB::table('users')->where('username', '=', $username)->get();
+		$transactid = $request->input('id');
+		
+		foreach($users as $user){
+			$id = $user->id;
+			$usernamedb = $user->username;
+			
+			if($usernamedb == $username){
+				$userid = $id;
+			}
+		}
+		
+		DB::table('transactions')->where('id', '=', $transactid)
+		->update([
+			'size' => $size,
+			'contact' => $contact,
+			'address' => $address
+		]);
+		
+		return redirect()->route('cart', ['id' => $userid]);
+		
+	}
+	
+	public function cancel(){
+		return view('itemDelete');
+	}
+	
+	public function delete(Request $request){
+		$username = $request->input('username');
+		$size = $request->input('size');
+		$contact = $request->input('contact');
+		$address = $request->input('address');
+		$users = DB::table('users')->where('username', '=', $username)->get();
+		$transactid = $request->input('id');
+		
+		foreach($users as $user){
+			$id = $user->id;
+			$usernamedb = $user->username;
+			
+			if($usernamedb == $username){
+				$userid = $id;
+			}
+		}
+		
+		DB::table('transactions')->where('id', '=', $transactid)->delete();
+		
+		return redirect()->route('cart', ['id' => $userid]);
+		
+	}
 }
